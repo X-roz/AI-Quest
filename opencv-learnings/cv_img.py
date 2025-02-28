@@ -1,6 +1,6 @@
 import cv2
 
-img = cv2.imread("C:/Users/HP/vk-works/AI/Basics-learnings/dataset/img/vicky.jpg")
+img = cv2.imread("../img/vicky.jpg")
 while True:
     cv2.imshow('vicky', img)
 
