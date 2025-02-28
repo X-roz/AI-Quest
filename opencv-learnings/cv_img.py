@@ -1,5 +1,6 @@
 import cv2
 
+# Showing image through opencv 
 img = cv2.imread("../img/vicky.jpg")
 while True:
     cv2.imshow('vicky', img)
