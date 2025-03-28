@@ -1,6 +1,15 @@
 from ultralytics import YOLO
 import  cv2
 
-model = YOLO('../weights/yolov8n.pt')
-results = model('./images/schl_bus.jpg', show = True)
+# YOLO model
+# yolov8n - Nano   - fast and less accurate
+# yolov8m - Medium - Medium pace and normal accuracy
+# yolov8l - Large  - slow and accurate
+
+model = YOLO('../weights/yolov8m.pt')
+
+# Pass the image to the model and show the result
+results = model('./images/cars_highway.jpg', show = True)
+
+# Wait key is show the result until we close
 cv2.waitKey(0)
