@@ -4,11 +4,11 @@ import cv2
 import math
 
 # To Check whether teh code is running on GPU
-# import torch
-# if torch.cuda.is_available():
-#     print("GPU is available")
-# else:
-#     print("GPU is not available")
+import torch
+if torch.cuda.is_available():
+    print("GPU is available")
+else:
+    print("GPU is not available")
 
 model = YOLO('../weights/yolov8n.pt')
 
