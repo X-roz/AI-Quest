@@ -41,17 +41,24 @@ while rec.isOpened():
             # Get the object positions
             x1,y1,x2,y2 = box.xyxy[0]
             x1,y1,x2,y2 = int(x1), int(y1), int(x2), int(y2)
-
-            # draw boxes
             w, h = (x2-x1), (y2-y1)
-            cvzone.cornerRect(frame, bbox=(x1, y1, w, h))
+
 
             # take confidence percent and Object name
             conf = math.ceil(box.conf[0] * 100) / 100
             cls = int(box.cls[0])
+            currentClass = classNames[cls]
 
-            # show confidence value with object name
-            cvzone.putTextRect(frame, f"{classNames[cls]}{conf}", (max(0,x1), max(35, y1)), scale=1, thickness=2)
+            # Detect only Car
+            if currentClass == 'car' and conf > 0.3:
+
+                # corner box
+                cvzone.cornerRect(frame, bbox=(x1, y1, w, h), l=15, t=2)
+
+                # showing object name with confidence
+                cvzone.putTextRect(frame, f"{currentClass}{conf}", (max(0,x1), max(35, y1)),
+                                   scale=1, thickness=2, offset = 5)
+
 
     cv2.imshow("Car Counter" , frame)
     if cv2.waitKey(1) & 0xFF == 27:
