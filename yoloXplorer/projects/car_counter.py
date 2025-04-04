@@ -1,4 +1,5 @@
 import math
+
 import torch
 import cvzone
 import cv2
@@ -26,6 +27,10 @@ classNames = [
     "teddy bear", "hair drier", "toothbrush"
 ]
 
+# Read the mask for entry cars
+entry_mask = cv2.imread("./masks/cars_entry_mask.png")
+print("Entry Mask :",entry_mask.shape)
+
 # Reading video
 rec = cv2.VideoCapture('../core/videos/cars.mp4')
 
@@ -33,8 +38,11 @@ while rec.isOpened():
     # read the video frame by frame
     ret, frame = rec.read()
 
+    # masking using bitwise AND operation
+    entry_frame = cv2.bitwise_and(frame, entry_mask)
+
     # track the objects and count the cars
-    results = model(frame, stream = True)
+    results = model(entry_frame, stream = True)
     for r in results:
         boxes = r.boxes
         for box in boxes:
@@ -42,7 +50,6 @@ while rec.isOpened():
             x1,y1,x2,y2 = box.xyxy[0]
             x1,y1,x2,y2 = int(x1), int(y1), int(x2), int(y2)
             w, h = (x2-x1), (y2-y1)
-
 
             # take confidence percent and Object name
             conf = math.ceil(box.conf[0] * 100) / 100
@@ -59,8 +66,7 @@ while rec.isOpened():
                 cvzone.putTextRect(frame, f"{currentClass}{conf}", (max(0,x1), max(35, y1)),
                                    scale=1, thickness=2, offset = 5)
 
-
-    cv2.imshow("Car Counter" , frame)
+    cv2.imshow("Car Counter", frame)
     if cv2.waitKey(1) & 0xFF == 27:
         break
 
